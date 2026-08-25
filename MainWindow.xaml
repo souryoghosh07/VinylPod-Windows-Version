@@ -1,0 +1,89 @@
+﻿<Window x:Class="VinylPod.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VinylPod" 
+        Icon="VinylPod.ico"
+        Height="130" Width="360"
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Storyboard x:Key="SpinAnimation" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="RecordRotation" 
+                             Storyboard.TargetProperty="Angle" 
+                             From="0" To="360" Duration="0:0:5" />
+        </Storyboard>
+
+        <Style x:Key="MediaButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+       
+        <Border x:Name="AmbientBackground" Visibility="Collapsed">
+            <Border.Background>
+                <ImageBrush x:Name="AmbientArtBrush" Stretch="UniformToFill" />
+            </Border.Background>
+            
+            <Border Background="#B3000000"/> 
+        </Border>
+
+        
+        <Viewbox Stretch="Uniform">
+            
+            <Border x:Name="GlassCard" Background="#CC1A2232" CornerRadius="15" Padding="15" Width="360" Height="130">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0" Width="100" Height="100">
+                        <Ellipse x:Name="VinylRecord" RenderTransformOrigin="0.5,0.5">
+                            <Ellipse.Fill>
+                                <ImageBrush x:Name="AlbumArtBrush" Stretch="UniformToFill" />
+                            </Ellipse.Fill>
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="RecordRotation" Angle="0" />
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                        <Ellipse Width="12" Height="12" Fill="#1A2232" />
+                    </Grid>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15,0,0,0">
+                        <TextBlock x:Name="SongTitleText" Text="Waiting for music..." Foreground="White" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock x:Name="SongArtistText" Text="Play something on Spotify" Foreground="#B3FFFFFF" FontSize="13" Margin="0,2,0,15" TextTrimming="CharacterEllipsis"/>
+                        
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="⏮" Style="{StaticResource MediaButtonStyle}" Click="BtnPrev_Click" Margin="0,0,20,0"/>
+                            <Button x:Name="BtnPlayPause" Content="▶" Style="{StaticResource MediaButtonStyle}" Click="BtnPlayPause_Click" Margin="0,0,20,0"/>
+                            <Button Content="⏭" Style="{StaticResource MediaButtonStyle}" Click="BtnNext_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Viewbox>
+    </Grid>
+</Window>
